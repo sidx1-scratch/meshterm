@@ -5,13 +5,16 @@ import { buildCockpitCheckCommand, buildCockpitSetupCommand, buildCockpitUrl, op
 import { installCockpitExtension, installCockpitExtensionOnComputer } from "./cockpit-extension.js";
 import { checkLocalSsh, getSshInstallCommand, installLocalSsh } from "./doctor.js";
 import { formatDestination, openShell, runSsh } from "./ssh.js";
+import { findSshPublicKey, copySshKey, checkSshCopyIdAvailable } from "./ssh-setup.js";
+import { createInterface } from "node:readline/promises";
+import { stdin as input, stdout as output } from "node:process";
 
 const HELP = `
 meshterm
 
 Usage:
   meshterm init
-  meshterm add <name> --host <host> [--user <user>] [--port <port>] [--tag <tag>] [--identity <path>] [--cockpit-port <port>] [--cockpit-scheme <scheme>] [--cockpit-path <path>] [--no-cockpit-extension]
+  meshterm add <name> --host <host> [--user <user>] [--port <port>] [--tag <tag>] [--identity <path>] [--cockpit-port <port>] [--cockpit-scheme <scheme>] [--cockpit-path <path>] [--no-cockpit-exte[...]
   meshterm list
   meshterm doctor [--install]
   meshterm cockpit <name> [--open|--check|--setup]
@@ -86,6 +89,52 @@ async function init() {
   const config = await loadConfig();
   await saveConfig(config);
   console.log(`Created ${CONFIG_PATH}`);
+  
+  // Offer SSH key setup
+  await offerSshKeySetup();
+}
+
+async function offerSshKeySetup() {
+  const rl = createInterface({ input, output });
+
+  try {
+    console.log("\n--- SSH Key Setup ---");
+    const publicKey = findSshPublicKey();
+
+    if (!publicKey) {
+      console.log("No SSH public key found. Generate one with: ssh-keygen -t ed25519");
+      return;
+    }
+
+    console.log(`Found SSH public key: ${publicKey}`);
+    const sshCopyIdAvailable = await checkSshCopyIdAvailable();
+
+    if (!sshCopyIdAvailable) {
+      console.log("ssh-copy-id not found. Install it or manually add your key to remote machines.");
+      return;
+    }
+
+    const answer = await rl.question("Would you like to copy your SSH key to a remote machine now? (y/n) ");
+
+    if (answer.toLowerCase() === "y") {
+      const destination = await rl.question("Enter remote destination (user@host): ");
+      const portStr = await rl.question("Enter SSH port (default: 22): ");
+      const port = portStr ? Number(portStr) : 22;
+
+      if (!destination) {
+        console.log("No destination provided.");
+        return;
+      }
+
+      const exitCode = await copySshKey(publicKey, destination, port);
+      if (exitCode === 0) {
+        console.log("\nYou can now add this machine with:");
+        console.log(`  meshterm add <name> --host ${destination.split("@")[1] || destination} --user ${destination.split("@")[0] || "root"}`);
+      }
+    }
+  } finally {
+    rl.close();
+  }
 }
 
 async function add(args) {
