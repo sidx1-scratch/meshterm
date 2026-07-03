@@ -1,40 +1,33 @@
 name: Publish to GitHub Packages
-
 on:
   push:
     branches: [main]
   workflow_dispatch:
-
 permissions:
   contents: write
   packages: write
-
 jobs:
   publish:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           registry-url: https://npm.pkg.github.com
           scope: '@sidx1-scratch'
-
       - name: Run tests
         run: npm test
-
       - name: Bump version
-        run: npm version patch
-
+        run: npm version patch -m "chore: bump version to %s [skip ci]"
       - name: Push version bump
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git push
-
+          git push --follow-tags
       - name: Publish package
         run: npm publish --access public
         env:
