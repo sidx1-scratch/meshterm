@@ -21,6 +21,28 @@ meshterm run server "docker ps"
 
 MeshTerminal starts with standard SSH because it is the simplest common path. Remote machines do not need agents, daemons, plugins, or any installed MeshTerminal software. Future protocol adapters can support personal-device cases where SSH is unavailable.
 
+## Install from GitHub Packages
+
+If you want to install this package from GitHub Packages instead of npmjs, configure npm to use GitHub Packages for the scope of this package:
+
+```sh
+npm config set @sidx1-scratch:registry https://npm.pkg.github.com
+```
+
+Then install it:
+
+```sh
+npm install @sidx1-scratch/meshterm
+```
+
+If you use a personal access token for GitHub Packages, authenticate with:
+
+```sh
+npm login --scope=@sidx1-scratch --registry=https://npm.pkg.github.com
+```
+
+Use your GitHub username and a personal access token with `read:packages` access.
+
 ## Design Philosophy
 
 - One terminal controls all machines.
