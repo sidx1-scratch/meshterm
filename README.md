@@ -6,12 +6,17 @@ Single-stream terminal control for solo devs and small teams managing their own 
 
 Build a cross-platform npm package for solo developers, hobbyists, homelab users, and small teams who want one terminal interface for their own machines. The user types routed commands into a single local prompt, and MeshTerminal sends each command to the correct remote computer while streaming tagged output back into the same terminal.
 
-The core interaction should feel like this:
+The basic command is:
 
 ```sh
-devpc_run:ls -la:
-server_run:docker ps:
-pi_run:python app.py:
+meshterm run <machine> "command"
+```
+
+Example:
+
+```sh
+meshterm run devpc "uptime"
+meshterm run server "docker ps"
 ```
 
 MeshTerminal starts with standard SSH because it is the simplest common path. Remote machines do not need agents, daemons, plugins, or any installed MeshTerminal software. Future protocol adapters can support personal-device cases where SSH is unavailable.
@@ -55,83 +60,46 @@ Requirements:
 - No MeshTerminal agent installed remotely.
 - Optional Cockpit web console on port 9090 for machines where the user wants a browser-based system dashboard.
 
-## Command Grammar
+## Command Syntax
 
-Primary command format:
+The main CLI usage is:
 
-```txt
-target_action:command:
+```sh
+meshterm run <machine> "command"
 ```
 
 Examples:
 
 ```sh
-devpc_run:htop:
-server_run:uptime:
-server_run:cat /var/log/syslog | grep error:
-pi_run:python app.py:
+meshterm run devpc "uptime"
+meshterm run server "docker ps"
+meshterm run all "hostname"
+meshterm run @dev "systemctl status nginx"
 ```
 
-Parse result:
+You can also start an interactive shell on one machine:
 
-```json
-{
-  "target": "server",
-  "action": "run",
-  "command": "docker ps"
-}
-```
-
-Parsing rules:
-
-- `target` is the text before the first `_`.
-- `action` is the text after the first `_` and before the first `:`.
-- `command` is the text between the first `:` and the final trailing `:`.
-- Commands may contain spaces, pipes, quotes, flags, paths, and shell operators.
-- The final `:` terminates the routed command.
-- Empty target, action, or command should be rejected with a useful error.
-- Unknown targets should not execute anything.
-- Unknown actions should be rejected unless explicitly implemented.
-
-Minimum supported action:
-
-```txt
-run
-```
-
-Reserved future actions:
-
-```txt
-shell
-copy
-watch
-env
-status
+```sh
+meshterm shell devpc
 ```
 
 ## Routing Targets
 
-Required MVP targets:
+You can target:
 
 ```txt
-devpc_run:uptime:       run on one configured machine named devpc
-server_run:docker ps:   run on one configured machine named server
-all_run:uptime:         run on every configured machine
+device name   one configured machine
+all           every configured machine
+@tag          every machine with that tag
 ```
 
-Group targets:
+Examples:
 
-```txt
-web_run:systemctl status nginx:
-db_run:df -h:
+```sh
+meshterm run devpc "uptime"
+meshterm run all "hostname"
+meshterm run @dev "df -h"
 ```
-
-Config should be able to map group names to machine aliases.
-
-Avoid target ambiguity:
-
-- If a machine and group share the same name, machine names should win or the app should reject the duplicate at config time.
-- Reserved targets like `all` should not be allowed as machine aliases.
 
 ## Output Format
 
@@ -226,6 +194,15 @@ Security requirements:
 - Do not silently disable host key checking.
 - Let users rely on normal OpenSSH behavior for known hosts.
 - Treat routed command input as remote shell input; do not attempt to sanitize by breaking valid shell syntax.
+
+## Quick Start
+
+```sh
+meshterm init
+meshterm add devpc --host 192.168.1.20 --user yourname
+meshterm list
+meshterm run devpc "uptime"
+```
 
 ## Config
 
