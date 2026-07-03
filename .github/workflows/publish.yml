@@ -13,21 +13,28 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           registry-url: https://npm.pkg.github.com
           scope: '@sidx1-scratch'
+
       - name: Run tests
         run: npm test
-      - name: Bump version
-        run: npm version patch -m "%s is most likely stable (no guarantees™) "
-      - name: Push version bump
+
+      - name: Configure git identity
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git push --follow-tags
+
+      - name: Bump version
+        run: npm version patch -m "%s is most likely stable (no guarantees™) "
+
+      - name: Push version bump
+        run: git push --follow-tags
+
       - name: Publish package
         run: npm publish --access public
         env:
