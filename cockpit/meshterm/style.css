@@ -1,0 +1,40 @@
+:root {
+  color-scheme: light dark;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: Canvas;
+  color: CanvasText;
+}
+body { margin: 0; }
+button, input, select { font: inherit; }
+button {
+  border: 1px solid color-mix(in srgb, CanvasText 24%, transparent);
+  border-radius: 6px;
+  background: ButtonFace;
+  color: ButtonText;
+  min-height: 2.25rem;
+  padding: 0 0.85rem;
+  cursor: pointer;
+}
+button:disabled { cursor: wait; opacity: 0.65; }
+.page { max-width: 1180px; margin: 0 auto; padding: 1.25rem; }
+.topbar, .runner, .output-header { display: flex; align-items: center; gap: 1rem; }
+.topbar { justify-content: space-between; margin-bottom: 1rem; }
+h1, h2, h3, p { margin: 0; }
+h1 { font-size: 1.65rem; font-weight: 650; }
+h2 { font-size: 1rem; margin-bottom: 0.75rem; }
+#status { color: color-mix(in srgb, CanvasText 68%, transparent); margin-top: 0.25rem; }
+.runner { border-block: 1px solid color-mix(in srgb, CanvasText 14%, transparent); padding: 1rem 0; margin-bottom: 1rem; }
+.runner label { display: grid; gap: 0.35rem; font-size: 0.82rem; font-weight: 600; color: color-mix(in srgb, CanvasText 76%, transparent); }
+.command-field { flex: 1; }
+select, input { min-height: 2.25rem; border: 1px solid color-mix(in srgb, CanvasText 22%, transparent); border-radius: 6px; background: Canvas; color: CanvasText; padding: 0 0.65rem; }
+.content { display: grid; grid-template-columns: minmax(17rem, 24rem) minmax(0, 1fr); gap: 1rem; }
+.machine { border: 1px solid color-mix(in srgb, CanvasText 14%, transparent); border-radius: 8px; padding: 0.85rem; margin-bottom: 0.65rem; }
+.machine h3 { font-size: 1rem; }
+.machine p { margin-top: 0.25rem; overflow-wrap: anywhere; }
+.machine small, .empty { display: block; margin-top: 0.35rem; color: color-mix(in srgb, CanvasText 64%, transparent); }
+.output-header { justify-content: space-between; }
+#output { box-sizing: border-box; min-height: 26rem; max-height: calc(100vh - 15rem); overflow: auto; margin: 0; padding: 0.85rem; border: 1px solid color-mix(in srgb, CanvasText 14%, transparent); border-radius: 8px; background: color-mix(in srgb, Canvas 92%, CanvasText 8%); white-space: pre-wrap; }
+@media (max-width: 760px) {
+  .topbar, .runner { align-items: stretch; flex-direction: column; }
+  .content { grid-template-columns: 1fr; }
+}

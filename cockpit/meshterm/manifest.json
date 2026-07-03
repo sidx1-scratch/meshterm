@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "tools": {
+    "meshterm": {
+      "label": "MeshTerminal",
+      "path": "index.html",
+      "order": 65,
+      "keywords": [
+        {
+          "matches": ["ssh", "terminal", "remote", "homelab", "meshterm"],
+          "translate": false
+        }
+      ]
+    }
+  }
+}

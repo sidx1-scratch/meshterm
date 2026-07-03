@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>MeshTerminal</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="../base1/cockpit.js"></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <main class="page">
+      <header class="topbar">
+        <div>
+          <h1>MeshTerminal</h1>
+          <p id="status">Loading configured computers...</p>
+        </div>
+        <button id="refresh" type="button">Refresh</button>
+      </header>
+      <section class="runner" aria-label="Run a command">
+        <label>Target<select id="target"></select></label>
+        <label class="command-field">Command<input id="command" type="text" autocomplete="off" placeholder="uptime"></label>
+        <button id="run" type="button">Run</button>
+      </section>
+      <section class="content">
+        <div class="machines"><h2>Computers</h2><div id="machines"></div></div>
+        <div class="output-panel">
+          <div class="output-header"><h2>Output</h2><button id="clear" type="button">Clear</button></div>
+          <pre id="output"></pre>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
