@@ -8,6 +8,9 @@ import { formatDestination, openShell, runSsh } from "./ssh.js";
 import { findSshPublicKey, copySshKey, checkSshCopyIdAvailable } from "./ssh-setup.js";
 import { createInterface } from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
+import fs from "node:fs";
+
+const PACKAGE = JSON.parse(fs.readFileSync(new URL("../package.json", import.meta.url), "utf8"));
 
 const HELP = `
 meshterm
@@ -74,7 +77,7 @@ async function main(argv) {
       case "version":
       case "--version":
       case "-v":
-        console.log("0.1.0");
+        console.log(PACKAGE.version);
         break;
       default:
         throw new Error(`Unknown command: ${command}\n\n${HELP}`);
