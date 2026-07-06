@@ -1,0 +1,22 @@
+# Development and build files
+.github/
+.tmp-npm/
+node_modules/
+.git/
+.gitignore
+.npmrc
+install.sh
+*.test.js
+test/
+tests/
+coverage/
+.nyc_output/
+*.log
+.DS_Store
+Thumbs.db
+.eslintignore
+.eslintrc*
+.prettierignore
+.prettierrc*
+jest.config.js
+tsconfig.json
