@@ -1,10 +1,10 @@
-# MeshTerminal
+# meshterm
 
 A cross-platform Node.js CLI for controlling multiple machines from a single terminal. Designed for solo developers, small teams, homelabs, and personal projects.
 
 ## Overview
 
-MeshTerminal provides one unified terminal interface for executing commands on multiple machines without requiring agents or special software on remote machines. It uses SSH as the default transport and leverages your existing SSH configuration and keys.
+meshterm provides one unified terminal interface for executing commands on multiple machines without requiring agents or special software on remote machines. It uses SSH as the default transport and leverages your existing SSH configuration and keys.
 
 ```sh
 meshterm run server "docker ps"
@@ -43,7 +43,7 @@ Use your GitHub username and a personal access token with `read:packages` access
 
 ## Quick Start
 
-Initialize MeshTerminal and add a machine:
+Initialize meshterm and add a machine:
 
 ```sh
 meshterm init
@@ -200,7 +200,7 @@ meshterm remove <name>
 
 ## Cockpit Integration
 
-MeshTerminal can integrate with Cockpit web consoles on your machines. Cockpit provides a browser-based system dashboard and administration interface.
+meshterm can integrate with Cockpit web consoles on your machines. Cockpit provides a browser-based system dashboard and administration interface.
 
 ### Check Cockpit Status
 
@@ -274,7 +274,7 @@ Supported systems for automatic installation: Fedora, Debian, Ubuntu, Arch, Alpi
 
 ## SSH Configuration
 
-MeshTerminal uses your system's SSH client and respects your existing SSH configuration:
+meshterm uses your system's SSH client and respects your existing SSH configuration:
 
 - `~/.ssh/config` — host aliases, port mappings, and defaults
 - SSH agent — for key management and unlocking encrypted keys
@@ -292,7 +292,7 @@ Security features:
 
 ### Control Device
 
-The control device runs the MeshTerminal CLI and is responsible for:
+The control device runs the meshterm CLI and is responsible for:
 
 - Parsing and routing commands
 - Loading machine configuration
@@ -307,7 +307,7 @@ Remote machines are standard SSH servers with no special requirements:
 
 - SSH server reachable from the control device
 - Key-based authentication or existing SSH agent
-- No MeshTerminal agent or software installed
+- No meshterm agent or software installed
 - Optional Cockpit web console for browser-based management
 
 ## Help
