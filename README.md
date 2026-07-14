@@ -17,8 +17,10 @@ meshterm run @prod "systemctl status nginx"
 Install from npm:
 
 ```sh
-npm install -g @sidx1-scratch/meshterm
+sudo npm i -g @sidx1scr-more/meshterm
 ```
+> [!TIP]
+> since you are installing globally (so that you can run it from any directory instead of always going into the install directory ) you have to use `sudo`, if you are on windows run cmd or powershell as administrator
 
 Or install from GitHub Packages:
 
