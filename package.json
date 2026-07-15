@@ -8,12 +8,12 @@
   ],
   "bin": {
     "meshterm": "./src/cli.js"
-  ],
+  },
   "version": "0.1.11",
   "type": "module",
   "engines": {
     "node": ">=18"
-  ],
+  },
   "scripts": {
     "test": "node --test"
   },
